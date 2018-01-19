@@ -45,6 +45,8 @@ class ApplicationWindow(QtWidgets.QMainWindow, form_class):
         self.stopButton.clicked.connect(self.stop_clicked)
         self.registerButton.clicked.connect(self.register_clicked)
 
+        self.useSpoof.stateChanged.connect(self.use_spoof)
+
         self.window_width = self.ImgWidget.frameSize().width()
         self.window_height = self.ImgWidget.frameSize().height()
         self.ImgWidget = ImageWindow(self.ImgWidget)
@@ -53,6 +55,7 @@ class ApplicationWindow(QtWidgets.QMainWindow, form_class):
         self.emotion_offsets = (20, 40)
         self.gender_offsets = (30, 60)
         self.recognition_offsets = (96, 100)
+        self.using_spoof = False
 
         # self.gender_labels = {1:'woman', 0:'man'}
         if gender_labels is None:
@@ -85,6 +88,14 @@ class ApplicationWindow(QtWidgets.QMainWindow, form_class):
         K.set_image_data_format('channels_last')
 
         self.stop_clicked()
+
+    def use_spoof(self):
+        if self.useSpoof.isChecked():
+            print("using spoof")
+            self.using_spoof = True
+        else:
+            print("without spoof")
+            self.using_spoof = False
 
     def register_clicked(self):
         new_entry = self.newLabel.text()
@@ -146,75 +157,86 @@ class ApplicationWindow(QtWidgets.QMainWindow, form_class):
                 except:
                     continue
 
-                gray_face = preprocess_input(gray_face, True)
-                gray_face = np.expand_dims(gray_face, 0)
-                gray_face = np.expand_dims(gray_face, -1)
-                emotion_prediction = self.emotion_classifier.predict(gray_face)
-                emotion_probability = np.max(emotion_prediction)
-                emotion_label_arg = np.argmax(emotion_prediction)
-                emotion_text = self.emotion_labels[emotion_label_arg]
-                self.emotion_window.append(emotion_text)
+                spoof_prediction = 0
+                if self.using_spoof:
+                    print("no function yet")
+                    # spoof_prediction = predict_spoof(rgb_face)    <<======================== here calling function
+                    spoof_prediction = 1
 
-                rgb_face = np.expand_dims(rgb_face, 0)
-                rgb_face = preprocess_input(rgb_face, False)
-                gender_label_arg = np.argmax(self.gender_classifier.predict(rgb_face))
-                gender_text = self.gender_labels[gender_label_arg]
-                self.gender_window.append(gender_text)
-
-                K.set_image_data_format('channels_first')
-                min_dist, identity = recognize(recog_face, self.database, self.recognition_model)
-                # print(min_dist, identity)
-                if min_dist < self.threshold:
-                    recognition_text = identity
-
-                self.recognition_window.append(recognition_text)
-                K.set_image_data_format('channels_last')
-                if self.verbose == 1:
-                    cv2.imshow('temp', self.register_face)
-
-                if len(self.emotion_window) > self.frame_window:
-                    self.emotion_window.pop(0)
-                    self.gender_window.pop(0)
-                    self.recognition_window.pop(0)
-
-                try:
-                    emotion_mode = mode(self.emotion_window)
-                    gender_mode = mode(self.gender_window)
-                    recognition_mode = mode(self.recognition_window)
-                except:
-                    continue
-
-                if gender_text == self.gender_labels[0]:
-                    color_g = (0, 0, 255)
+                if spoof_prediction == 1:
+                    draw_bounding_box(face_coordinates, rgb_image, (255, 0, 0))
+                    draw_text(face_coordinates, rgb_image, "SPOOF",
+                              (255, 0, 0), 0, -45, 1, 1)
                 else:
-                    color_g = (255, 0, 0)
+                    gray_face = preprocess_input(gray_face, True)
+                    gray_face = np.expand_dims(gray_face, 0)
+                    gray_face = np.expand_dims(gray_face, -1)
+                    emotion_prediction = self.emotion_classifier.predict(gray_face)
+                    emotion_probability = np.max(emotion_prediction)
+                    emotion_label_arg = np.argmax(emotion_prediction)
+                    emotion_text = self.emotion_labels[emotion_label_arg]
+                    self.emotion_window.append(emotion_text)
 
-                if recognition_text == 'Unknown':
-                    color_r = (255, 0, 0)
-                else:
-                    color_r = (0, 0, 255)
+                    rgb_face = np.expand_dims(rgb_face, 0)
+                    rgb_face = preprocess_input(rgb_face, False)
+                    gender_label_arg = np.argmax(self.gender_classifier.predict(rgb_face))
+                    gender_text = self.gender_labels[gender_label_arg]
+                    self.gender_window.append(gender_text)
 
-                if emotion_text == 'MARAH':
-                    color = emotion_probability * np.asarray((255, 0, 0))
-                elif emotion_text == 'SEDIH':
-                    color = emotion_probability * np.asarray((0, 0, 255))
-                elif emotion_text == 'SENANG':
-                    color = emotion_probability * np.asarray((255, 255, 0))
-                elif emotion_text == 'TERKEJUT':
-                    color = emotion_probability * np.asarray((0, 255, 255))
-                else:
-                    color = emotion_probability * np.asarray((0, 255, 0))
+                    K.set_image_data_format('channels_first')
+                    min_dist, identity = recognize(recog_face, self.database, self.recognition_model)
+                    # print(min_dist, identity)
+                    if min_dist < self.threshold:
+                        recognition_text = identity
 
-                color = color.astype(int)
-                color = color.tolist()
+                    self.recognition_window.append(recognition_text)
+                    K.set_image_data_format('channels_last')
+                    if self.verbose == 1:
+                        cv2.imshow('temp', self.register_face)
 
-                draw_bounding_box(face_coordinates, rgb_image, color)
-                draw_text(face_coordinates, rgb_image, emotion_mode,
-                          color, 0, -45, 1, 1)
-                draw_text(face_coordinates, rgb_image, gender_mode,
-                          color_g, 0, -20, 1, 1)
-                draw_text(face_coordinates, rgb_image, recognition_mode,
-                          color_r, 30, 200, 1, 1)
+                    if len(self.emotion_window) > self.frame_window:
+                        self.emotion_window.pop(0)
+                        self.gender_window.pop(0)
+                        self.recognition_window.pop(0)
+
+                    try:
+                        emotion_mode = mode(self.emotion_window)
+                        gender_mode = mode(self.gender_window)
+                        recognition_mode = mode(self.recognition_window)
+                    except:
+                        continue
+
+                    if gender_text == self.gender_labels[0]:
+                        color_g = (0, 0, 255)
+                    else:
+                        color_g = (255, 0, 0)
+
+                    if recognition_text == 'Unknown':
+                        color_r = (255, 0, 0)
+                    else:
+                        color_r = (0, 0, 255)
+
+                    if emotion_text == 'MARAH':
+                        color = emotion_probability * np.asarray((255, 0, 0))
+                    elif emotion_text == 'SEDIH':
+                        color = emotion_probability * np.asarray((0, 0, 255))
+                    elif emotion_text == 'SENANG':
+                        color = emotion_probability * np.asarray((255, 255, 0))
+                    elif emotion_text == 'TERKEJUT':
+                        color = emotion_probability * np.asarray((0, 255, 255))
+                    else:
+                        color = emotion_probability * np.asarray((0, 255, 0))
+
+                    color = color.astype(int)
+                    color = color.tolist()
+
+                    draw_bounding_box(face_coordinates, rgb_image, color)
+                    draw_text(face_coordinates, rgb_image, emotion_mode,
+                              color, 0, -45, 1, 1)
+                    draw_text(face_coordinates, rgb_image, gender_mode,
+                              color_g, 0, -20, 1, 1)
+                    draw_text(face_coordinates, rgb_image, recognition_mode,
+                              color_r, 30, 200, 1, 1)
 
             bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
             self.update_frame(bgr_image)
