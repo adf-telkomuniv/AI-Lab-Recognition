@@ -23,7 +23,7 @@ def load_database(model, dir_path):
 
 def recognize(img, database, model):
     encoding = img_to_encoding(img, model)
-    min_dist = 100
+    min_dist = 200
     identity = 'Unknown'
     for (name, db_enc) in database.items():
         dist = np.linalg.norm(encoding - db_enc)

@@ -4,6 +4,7 @@ from keras.models import load_model
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from utils.eg_utils import *
 from utils.rec_utils import *
+import os
 
 __author__ = 'ADF-AI'
 
@@ -100,7 +101,7 @@ class ApplicationWindow(QtWidgets.QMainWindow, form_class):
     def register_clicked(self):
         new_entry = self.newLabel.text()
 
-        cv2.imwrite(self.face_path + '/' + new_entry + '.jpg',
+        cv2.imwrite(os.path.join(self.face_path, new_entry + '.jpg'),
                     cv2.resize(self.register_face, self.recognition_target_size))
 
         self.newLabel.setText('')

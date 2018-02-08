@@ -19,4 +19,4 @@ w.show()
 app.exec_()
 
 
-# copyright (c) 2017 - Artificial Intelligence Laboratory, Telkom University #
+# copyright (c) 2018 - Artificial Intelligence Laboratory and Computing Laboratory, Telkom University #
