@@ -4,12 +4,9 @@ from keras.models import load_model
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from utils.eg_utils import *
 from utils.rec_utils import *
-<<<<<<< HEAD
 import os
-=======
 from utils.spoof_utils import *
 import pickle
->>>>>>> d42401fe00cb4e4195662efcf7fef2b5f2c407bd
 
 __author__ = 'ADF-AI'
 
