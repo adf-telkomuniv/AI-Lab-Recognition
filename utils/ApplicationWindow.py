@@ -4,13 +4,17 @@ from keras.models import load_model
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from utils.eg_utils import *
 from utils.rec_utils import *
+<<<<<<< HEAD
 import os
+=======
+from utils.spoof_utils import *
+import pickle
+>>>>>>> d42401fe00cb4e4195662efcf7fef2b5f2c407bd
 
 __author__ = 'ADF-AI'
 
 form_class = uic.loadUiType("GUI.ui")[0]
 running = False
-
 
 class ImageWindow(QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -32,8 +36,8 @@ class ImageWindow(QtWidgets.QWidget):
 
 
 class ApplicationWindow(QtWidgets.QMainWindow, form_class):
-    def __init__(self, face_model, emotion_model, gender_model, recognition_model, parent=None, gender_labels=None,
-                 emotion_labels=None, face_path='./faces', verbose=0, threshold=0.5):
+    def __init__(self, face_model, emotion_model, gender_model, recognition_model, spoof_model, parent=None, 
+                 gender_labels=None, emotion_labels=None, face_path='./faces', verbose=0, threshold=0.5):
         QtWidgets.QMainWindow.__init__(self, parent)
         self.setupUi(self)
 
@@ -73,10 +77,12 @@ class ApplicationWindow(QtWidgets.QMainWindow, form_class):
         self.face_detection = cv2.CascadeClassifier(face_model)
         self.emotion_classifier = load_model(emotion_model, compile=False)
         self.gender_classifier = load_model(gender_model, compile=False)
+        self.spoof_detection = pickle.load(open(spoof_model, 'rb'))
 
         self.emotion_target_size = self.emotion_classifier.input_shape[1:3]
         self.gender_target_size = self.gender_classifier.input_shape[1:3]
         self.recognition_target_size = (96, 96)
+        self.spoof_target_size = (120, 144)
 
         self.emotion_window = []
         self.gender_window = []
@@ -155,14 +161,14 @@ class ApplicationWindow(QtWidgets.QMainWindow, form_class):
                     rgb_face = cv2.resize(rgb_face, self.gender_target_size)
                     gray_face = cv2.resize(gray_face, self.emotion_target_size)
                     recog_face = cv2.resize(recog_face, self.recognition_target_size)
+                    spoof_face = cv2.resize(rgb_face, self.spoof_target_size)
                 except:
                     continue
 
                 spoof_prediction = 0
                 if self.using_spoof:
-                    print("no function yet")
-                    # spoof_prediction = predict_spoof(rgb_face)    <<======================== here calling function
-                    spoof_prediction = 1
+                    #print("no function yet")
+                    spoof_prediction = predict_spoof(spoof_face, self.spoof_detection)
 
                 if spoof_prediction == 1:
                     draw_bounding_box(face_coordinates, rgb_image, (255, 0, 0))
