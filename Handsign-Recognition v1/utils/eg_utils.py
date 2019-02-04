@@ -2,13 +2,17 @@ import cv2
 
 __author__ = 'ADF-AI'
 
+from skimage.transform import resize
+import numpy as np
 
 def preprocess_input(x, v2=True):
     x = x.astype('float32')
     x = x / 255.0
     if v2:
         x = 2.0 * (x - 0.5)
-    return x
+    #print(x.shape)
+    x = resize(x[0], (64,64))
+    return  np.expand_dims(x, axis=0)
 
 
 def draw_text(coordinates, img, text, color, x_offset=0, y_offset=0,

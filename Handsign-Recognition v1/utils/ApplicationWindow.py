@@ -45,7 +45,7 @@ class ApplicationWindow(QtWidgets.QMainWindow,  form_class):
         self.window_width = self.ImgWidget.frameSize().width()
         self.window_height = self.ImgWidget.frameSize().height()
         self.ImgWidget = ImageWindow(self.ImgWidget)
-
+		
         self.recognition_target_size = (96, 96)
 
         self.hand_model = load_model(hand_model, compile=False)
@@ -78,9 +78,10 @@ class ApplicationWindow(QtWidgets.QMainWindow,  form_class):
             recognition_text = 'Unknown'
             bgr_image = video_capture.read()[1]
             #bgr_image = bgr_image[115:355, 205:435]
-            rgb_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB)
+            rgb_image = bgr_image
+            #rgb_image = cv2.cvtColor(bgr_image, cv2.COLOR_BGR2RGB)
             #480 640
-            rgb_image = rgb_image[115:355, 205:435]
+            rgb_image = rgb_image[160:310, 245:395]
             cv2.imshow("cropped", rgb_image)
             #print(rgb_image.shape)
             rgb_image = np.expand_dims(rgb_image, 0)
@@ -88,6 +89,9 @@ class ApplicationWindow(QtWidgets.QMainWindow,  form_class):
             outp = self.hand_model.predict(rgb_image)
             num_arg = np.argmax(outp)
             print(num_arg)
+            self.label.setText(str(num_arg))
+            outp_str = ', '.join(map(str, list(np.around(outp,2))))
+            self.label_3.setText(outp_str)
             self.update_frame(bgr_image)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break

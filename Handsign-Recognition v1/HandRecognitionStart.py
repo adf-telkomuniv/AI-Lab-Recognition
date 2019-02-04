@@ -2,7 +2,8 @@ from utils.ApplicationWindow import *
 import sys
 
 # ---------------------------------------------------------
-hand_model = './models/hand_recog.h5'
+#hand_model = './models/hand_recog.h5'
+hand_model = './models/best.hdf5'
 verbose = 1
 # ---------------------------------------------------------
 
