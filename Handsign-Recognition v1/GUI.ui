@@ -1,146 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * @license
+ * Copyright 2019 AI Lab - Telkom University. All Rights Reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =============================================================================
+-->
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>639</width>
-    <height>601</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>MainWindow</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>80</y>
-      <width>621</width>
-      <height>381</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="title">
-     <string>Video</string>
-    </property>
-    <widget class="QWidget" name="ImgWidget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>601</width>
-       <height>351</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QPushButton" name="startButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>300</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Start video</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="stopButton">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>10</y>
-      <width>300</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Stop video</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>470</y>
-      <width>111</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>25</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>480</y>
-      <width>121</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>0  1  2  3  4  5</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>180</x>
-      <y>510</y>
-      <width>221</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>639</width>
-     <height>26</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar"/>
- </widget>
- <resources/>
- <connections/>
+	<class>MainWindow</class>
+	<widget class="QMainWindow" name="MainWindow">
+		<property name="geometry">
+			<rect>
+				<x>0</x>
+				<y>0</y>
+				<width>639</width>
+				<height>601</height>
+			</rect>
+		</property>
+		<property name="windowTitle">
+			<string>MainWindow</string>
+		</property>
+		<property name="styleSheet">
+			<string notr="true"/>
+		</property>
+		<widget class="QWidget" name="centralwidget">
+			<widget class="QGroupBox" name="groupBox">
+				<property name="geometry">
+					<rect>
+						<x>10</x>
+						<y>80</y>
+						<width>621</width>
+						<height>381</height>
+					</rect>
+				</property>
+				<property name="sizePolicy">
+					<sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+						<horstretch>0</horstretch>
+						<verstretch>0</verstretch>
+					</sizepolicy>
+				</property>
+				<property name="title">
+					<string>Video</string>
+				</property>
+				<widget class="QWidget" name="ImgWidget" native="true">
+					<property name="geometry">
+						<rect>
+							<x>10</x>
+							<y>20</y>
+							<width>601</width>
+							<height>351</height>
+						</rect>
+					</property>
+				</widget>
+			</widget>
+			<widget class="QPushButton" name="startButton">
+				<property name="geometry">
+					<rect>
+						<x>10</x>
+						<y>10</y>
+						<width>300</width>
+						<height>61</height>
+					</rect>
+				</property>
+				<property name="text">
+					<string>Start video</string>
+				</property>
+			</widget>
+			<widget class="QPushButton" name="stopButton">
+				<property name="geometry">
+					<rect>
+						<x>320</x>
+						<y>10</y>
+						<width>300</width>
+						<height>61</height>
+					</rect>
+				</property>
+				<property name="text">
+					<string>Stop video</string>
+				</property>
+			</widget>
+			<widget class="QLabel" name="label">
+				<property name="geometry">
+					<rect>
+						<x>20</x>
+						<y>470</y>
+						<width>111</width>
+						<height>61</height>
+					</rect>
+				</property>
+				<property name="font">
+					<font>
+						<pointsize>25</pointsize>
+						<weight>75</weight>
+						<bold>true</bold>
+					</font>
+				</property>
+				<property name="text">
+					<string/>
+				</property>
+			</widget>
+			<widget class="QLabel" name="label_2">
+				<property name="geometry">
+					<rect>
+						<x>180</x>
+						<y>480</y>
+						<width>121</width>
+						<height>16</height>
+					</rect>
+				</property>
+				<property name="font">
+					<font>
+						<pointsize>10</pointsize>
+					</font>
+				</property>
+				<property name="text">
+					<string>0  1  2  3  4  5</string>
+				</property>
+			</widget>
+			<widget class="QLabel" name="label_3">
+				<property name="geometry">
+					<rect>
+						<x>180</x>
+						<y>510</y>
+						<width>221</width>
+						<height>16</height>
+					</rect>
+				</property>
+				<property name="font">
+					<font>
+						<pointsize>10</pointsize>
+					</font>
+				</property>
+				<property name="text">
+					<string/>
+				</property>
+			</widget>
+		</widget>
+		<widget class="QMenuBar" name="menubar">
+			<property name="geometry">
+				<rect>
+					<x>0</x>
+					<y>0</y>
+					<width>639</width>
+					<height>26</height>
+				</rect>
+			</property>
+		</widget>
+		<widget class="QStatusBar" name="statusbar"/>
+	</widget>
+	<resources/>
+	<connections/>
 </ui>
+
+<!-- @author ANDITYA ARIFIANTO, AI LAB - 2019 -->
